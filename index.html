@@ -3,91 +3,97 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>YourStartup</title>
-  <meta name="description" content="A student startup prototype for BSAD 281.">
+  <meta name="theme-color" content="#f5f4ed">
+  <title>Sprout - Plant care</title>
+  <meta name="description" content="A simple home for your plant watering schedule.">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-  <!-- =========================================================
-       HEADER: logo text + navigation.
-       Each link points to a "view" further down the page (#home, #explore, #about).
-       ========================================================= -->
   <header class="site-header">
-    <a class="brand" href="#home" id="brand-name">YourStartup</a>
-    <nav aria-label="Main">
-      <a href="#home">Home</a>
-      <a href="#explore">Explore</a>
-      <a href="#about">About</a>
-    </nav>
+    <a class="brand" href="#home" aria-label="Sprout home"><span class="brand-mark" aria-hidden="true">s.</span>sprout</a>
+    <div class="header-actions">
+      <span class="today-label" id="today-label"></span>
+      <button class="notification-button" id="notification-button" type="button" aria-pressed="false" title="Enable browser reminders">
+        <span aria-hidden="true">◷</span><span id="notification-label">Reminders off</span>
+      </button>
+    </div>
   </header>
 
-  <main>
-
-    <!-- =======================================================
-         VIEW 1: HOME — what you do, for whom, and why it matters.
-         ======================================================= -->
-    <section id="home" data-view>
-      <div class="hero">
-        <p class="eyebrow">Prototype</p>
-        <h1 id="tagline">One sentence that says what your startup does.</h1>
-        <p class="lead" id="pitch">
-          Who is your customer, what problem do they have, and why is your
-          solution better than what they use today?
-        </p>
-        <a class="button" href="#explore">See it in action</a>
+  <main id="home">
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">A little care goes a long way</p>
+        <h1 id="page-title">Your plants,<br><em>right on time.</em></h1>
       </div>
+      <p class="intro-note">A calmer way to keep every leaf happy. Add your plants, set their rhythm, and let the next watering take care of itself.</p>
+    </section>
 
-      <div class="steps">
-        <div class="card">
-          <h2>1. Step one</h2>
-          <p>Describe the first thing a customer does.</p>
-        </div>
-        <div class="card">
-          <h2>2. Step two</h2>
-          <p>Describe what happens next.</p>
-        </div>
-        <div class="card">
-          <h2>3. Step three</h2>
-          <p>Describe the result the customer gets.</p>
-        </div>
+    <section class="overview" aria-label="Watering overview">
+      <div class="overview-item">
+        <span class="overview-number" id="plant-count">0</span>
+        <span class="overview-label">in your collection</span>
       </div>
+      <div class="overview-item due-overview">
+        <span class="overview-number" id="due-count">0</span>
+        <span class="overview-label">ready for water</span>
+      </div>
+      <p class="overview-message" id="overview-message" aria-live="polite"></p>
     </section>
 
-    <!-- =======================================================
-         VIEW 2: EXPLORE — a list built from the fake data in data.js.
-         ======================================================= -->
-    <section id="explore" data-view hidden>
-      <h1>Explore</h1>
-      <p class="muted">These examples are fake. They come from <code>data.js</code>.</p>
+    <div class="dashboard">
+      <section class="plant-section" aria-labelledby="plants-heading">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">The growing list</p>
+            <h2 id="plants-heading">Your plants</h2>
+          </div>
+          <span class="plant-total" id="plant-total">0 plants</span>
+        </div>
+        <div class="plant-list" id="plant-list" aria-live="polite"></div>
+        <div class="empty-state" id="empty-state" hidden>
+          <span class="empty-mark" aria-hidden="true">✳</span>
+          <h3>A fresh start</h3>
+          <p>Add your first plant and give it a watering rhythm.</p>
+        </div>
+      </section>
 
-      <label class="search">
-        <span>Search</span>
-        <input type="search" id="search-box" placeholder="Type to filter…">
-      </label>
+      <aside class="add-panel" aria-labelledby="add-heading">
+        <p class="eyebrow">Make room for one more</p>
+        <h2 id="add-heading">Add a plant</h2>
+        <form id="plant-form">
+          <label for="plant-name">Plant name</label>
+          <input id="plant-name" name="name" type="text" placeholder="e.g. Monstera" maxlength="50" required>
 
-      <p class="muted" id="saved-count"></p>
-      <div class="grid" id="listing-grid"></div>
-      <p class="empty" id="empty-message" hidden>Nothing matches your search.</p>
-    </section>
+          <label for="plant-type">Kind <span class="optional">optional</span></label>
+          <input id="plant-type" name="kind" type="text" placeholder="e.g. Swiss cheese plant" maxlength="50">
 
-    <!-- =======================================================
-         VIEW 3: ABOUT — your team and your story.
-         ======================================================= -->
-    <section id="about" data-view hidden>
-      <h1>About us</h1>
-      <p>Tell the story of why your team started this company.</p>
-      <p>Use first names only, or no names at all — this site is public.</p>
-    </section>
+          <div class="form-row">
+            <div>
+              <label for="plant-frequency">Water every</label>
+              <div class="input-with-unit">
+                <input id="plant-frequency" name="frequency" type="number" min="1" max="60" value="7" required>
+                <span>days</span>
+              </div>
+            </div>
+            <div>
+              <label for="plant-time">Around</label>
+              <input id="plant-time" name="time" type="time" value="09:00" required>
+            </div>
+          </div>
 
+          <label for="plant-last-watered">Last watered</label>
+          <input id="plant-last-watered" name="lastWatered" type="date" required>
+          <button class="add-button" type="submit"><span aria-hidden="true">+</span> Add to my plants</button>
+        </form>
+        <p class="privacy-note">Your plant list stays in this browser.</p>
+      </aside>
+    </div>
   </main>
 
-  <!-- Keep this footer. Your site must say it is a student project. -->
   <footer class="site-footer">
     <p>Student prototype for BSAD 281 at St. Francis Xavier University. Not a real company — all data is fictional.</p>
   </footer>
 
-  <!-- Scripts load in this order: data first, then the code that uses it. -->
   <script src="data.js"></script>
   <script src="app.js"></script>
 </body>
